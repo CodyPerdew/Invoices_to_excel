@@ -4,25 +4,23 @@ import os
 from csv import DictWriter
 
 
-#mainlist, an empty list for each Rptstring to go. 
+
 #Rptstring format is 'ZZstart-Service-Month(MMMYY)-Name-Authnumber-Total-County-ZZend'
-mainlist = []
-pdffolder = str(input('Which c:/ folder has your PDFs?. Make sure it only contains PDFs: '))
 
-#pdffolder gives the user input and specifies the directory for the input PDFs
-
+mainlist = []                           #an empty list for each Rptstring to go. 
+pdffolder = str(input('Which c:/ folder has your PDFs?. Make sure it only contains PDFs: '))    #specifies where PDFs are located
 
 
-#for each pdf, run pdfminer Extract_Text on that PDF, search for any text between ZZstart and ZZend
-#append that text (which is the Rptstring from the invoice) to the mainlist,
-#giving a list of each Rptstring from each PDF
-for item in os.listdir(pdffolder):
 
-    text = extract_text(pdffolder+'/'+item)
 
-    prize = re.search(('ZZStart-(.*)ZZEnd'), text)
 
-    mainlist.append(prize.group(1))
+for item in os.listdir(pdffolder):          #for each PDF
+
+    text = extract_text(pdffolder+'/'+item)     #extract the OCR text
+
+    prize = re.search(('ZZStart-(.*)ZZEnd'), text)      #locate the string between ZZstart/End
+
+    mainlist.append(prize.group(1))                 #add that string to the mainlist
 
 
 
@@ -34,22 +32,20 @@ names = ['SVC', 'MONTH', 'PARTICIPANT', 'AUTH', 'TOTAL', 'COUNTY', 'UOS']
 dictlist = []
 
 
-#For each Rptstring in the list, split it wherever you see '-', then create a 'Dictionary'
-#Where the keys come from the Names list above, and the second entry is the split values
-#From the Rptstring
-for i in mainlist:
-    entry = i.split('-')
-    firstdict = dict(zip(names, entry))
-    dictlist.append(firstdict)
+
+for i in mainlist:                          #for all strings in the list
+    entry = i.split('-')                    #split on the -
+    firstdict = dict(zip(names, entry))     #create a dict using the names specified, and the string values
+    dictlist.append(firstdict)              #add that dict to a list
 
 
 
 
 
-#Specifies filename.csv, 'W' for Write. Specifies the column headers (must match the namelist above)
-#Writes the headers to the file, and finally writes the Dictlist (compiled Rptstrings) to the rows. 
-with open ('heyyy.csv', 'w', newline='') as outfile:
-    writer = DictWriter(outfile, ('SVC', 'MONTH', 'PARTICIPANT', 'AUTH', 'TOTAL', 'COUNTY', 'UOS'))
+
+
+with open ('heyyy.csv', 'w', newline='') as outfile:        #Specify the CSV filename, Write, don't create a new blank line each time
+    writer = DictWriter(outfile, ('SVC', 'MONTH', 'PARTICIPANT', 'AUTH', 'TOTAL', 'COUNTY', 'UOS')) #use dictwriter to write each dict to CSV
     writer.writeheader()
     writer.writerows(dictlist)
 
