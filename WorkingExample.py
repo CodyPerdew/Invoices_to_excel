@@ -49,5 +49,5 @@ with open ('heyyy.csv', 'w', newline='') as outfile:        #Specify the CSV fil
     writer.writeheader()
     writer.writerows(dictlist)
 
-print('Finished, go find your file')
+print('Finished, go find your file')        #currently CSV is placed in the py projects folder
  
