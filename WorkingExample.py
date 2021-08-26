@@ -5,6 +5,7 @@ from csv import DictWriter
 
 
 #mainlist, an empty list for each Rptstring to go. 
+#Rptstring format is 'ZZstart-Service-Month(MMMYY)-Name-Authnumber-Total-County-ZZend'
 mainlist = []
 pdffolder = str(input('Which c:/ folder has your PDFs?. Make sure it only contains PDFs: '))
 
@@ -13,7 +14,7 @@ pdffolder = str(input('Which c:/ folder has your PDFs?. Make sure it only contai
 
 
 #for each pdf, run pdfminer Extract_Text on that PDF, search for any text between ZZstart and ZZend
-#append that text (which is the Rptstring from the BillReq page) to the mainlist,
+#append that text (which is the Rptstring from the invoice) to the mainlist,
 #giving a list of each Rptstring from each PDF
 for item in os.listdir(pdffolder):
 
@@ -27,14 +28,14 @@ for item in os.listdir(pdffolder):
 
 
 
-#create list that describes dictionary names or fields
+#create list that describes dictionary keys
 #create an empty list for dictionaries to go
 names = ['SVC', 'MONTH', 'PARTICIPANT', 'AUTH', 'TOTAL', 'COUNTY', 'UOS']
 dictlist = []
 
 
 #For each Rptstring in the list, split it wherever you see '-', then create a 'Dictionary'
-#Where the first entry comes from the Names list above, and the second entry is the split values
+#Where the keys come from the Names list above, and the second entry is the split values
 #From the Rptstring
 for i in mainlist:
     entry = i.split('-')
