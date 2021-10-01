@@ -7,8 +7,8 @@ from csv import DictWriter                                          #from the CS
 
 
 mainlist = []                                                       #mainlist, an empty list for each Billing Tag to go. 
-pdffolder = str(input('Which c:/ folder has your PDFs?. Make sure it only contains PDFs: '))    #pdffolder asks user for PDF location.
-
+pdffolder = str(input('Which c:/ folder has your PDFs?. Make sure it only contains PDFs: '))    
+                                                                    #pdffolder asks user for PDF location.
 
 
 
@@ -17,9 +17,9 @@ for item in os.listdir(pdffolder):
     text = extract_text(pdffolder+'/'+item)
 
     prize = re.findall(('ZZStart-(.*)ZZEnd'), text)                 #search for text between 'ZZstart' & 'ZZend'. Findall grabs each instance & adds them to a list called Prize.
-    tags = len(prize)                                               #Tags is the number of tags found in that pdf. 
+    tags = len(prize)                                               #Tags is the number of billing tags found in that pdf. 
     pages = len(list(extract_pages(pdffolder+'/'+item)))            #Pages is the number of pages for that PDF, so we can find untagged invoices. 
-    print('{} : {} pages :  {} tags'.format(item, pages, tags))     #Tells user how many pages vs tags found. User can inspect PDFs with missing tags for data entry. 
+    print('{} : {} pages :  {} tags'.format(item, pages, tags))     #Tells user how many pages vs tags found for each PDF. User can inspect PDFs with missing tags for data entry. 
 
     if prize != None:                                               #If no tags are found there's nothing to append to the main list, this loop gets around that exception.
         for i in prize:                                             #for each item in each 'Prize' list
